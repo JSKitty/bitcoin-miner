@@ -67,14 +67,14 @@ class Miner {
 		return hash;
 	}
 
-	progressReport() {
+	progressReport(h, t) {
 		const timeStarted = Date.now();
 		console.log('\n[Progress Report]');
-		const strHashes = this.stats.hashes.toLocaleString('en-gb');
+		const strHashes = (h || this.stats.hashes ).toLocaleString('en-gb');
 		console.log('Hashes: ' + strHashes);
-		console.log(util.prettyHashrate(this.getHashrate()));
-		console.log('Est:    ' + util.prettyHitEst(this.getEstimateHitTime()));
-		console.log('Timing: ' + chalk.yellow('misc ' + this.stats.timeSpentMisc.toFixed(0) + ' ms') + ' ' + chalk.cyanBright('hashing ' + this.stats.timeSpentHashing.toFixed(0) + ' ms') + ' ' + chalk.blue('logs ' + this.stats.timeSpentLogs.toFixed(0) + 'ms') + ' ' + chalk.red('total ' + (this.stats.timeSpentHashing + this.stats.timeSpentMisc).toFixed(0) + ' ms'));
+		console.log(util.prettyHashrate(this.getHashrate(h, t)));
+		console.log('Est:    ' + util.prettyHitEst(this.getEstimateHitTime(h, t)));
+		if (!h && !t) console.log('Timing: ' + chalk.yellow('misc ' + this.stats.timeSpentMisc.toFixed(0) + ' ms') + ' ' + chalk.cyanBright('hashing ' + this.stats.timeSpentHashing.toFixed(0) + ' ms') + ' ' + chalk.blue('logs ' + this.stats.timeSpentLogs.toFixed(0) + 'ms') + ' ' + chalk.red('total ' + (this.stats.timeSpentHashing + this.stats.timeSpentMisc).toFixed(0) + ' ms'));
 		this.stats.timeSpentLogs += Date.now() - timeStarted;
 	}
 
@@ -107,9 +107,9 @@ class Miner {
 
 	getDifficulty = () => BN(powLimit).dividedBy(BN(this.ntarget));
 
-	getHashrate = () => ((this.stats.hashes / this.stats.timeSpentHashing) * 1000);
+	getHashrate = (h, t) => (((h || this.stats.hashes) / (t || this.stats.timeSpentHashing)) * 1000);
 
-	getEstimateHitTime = () => Number(this.getDifficulty().multipliedBy(BN(2).exponentiatedBy(32)).dividedBy(this.getHashrate()).toString());
+	getEstimateHitTime = (h, t) => Number(this.getDifficulty().multipliedBy(BN(2).exponentiatedBy(32)).dividedBy(this.getHashrate(h, t)).toString());
 
 	checkHash = (h) => Buffer.compare(this.getTarget(), h) > 0;
 }
