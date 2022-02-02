@@ -191,7 +191,7 @@ console.log(miner.getDifficulty().toString());
 
 console.log('\n[Start Mining with initial nonce:', nonce, ']');
 const nStart = Date.now();
-while (nonce < 8561950000) {
+while (nonce <= 4294967295) {
 	if (miner.checkHash(miner.getHash(nonce))) {
 		miner.verifyNonce(block, nonce);
 		miner.progressReport();
