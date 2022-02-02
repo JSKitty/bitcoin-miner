@@ -37,6 +37,8 @@
 		"xo": "*"
 	},
 	"dependencies": {
+		"@noble/hashes": "^1.0.0",
+		"bignumber.js": "^9.0.2",
 		"chalk": "^2.3.0"
 	}
 }

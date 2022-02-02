@@ -61,7 +61,7 @@ Returns the target `Buffer` for that block based on it's **bits** (difficulty).
 
 ### getHash(nonce)
 
-Returns the sha256sha256 hash `Buffer` for that block's **nonce**.
+Returns the sha256d hash `Buffer` for that block's **nonce**.
 
 ### checkHash(hash)
 
